@@ -76,3 +76,10 @@ def summarize_by_month_and_weekday_ratio(df):
     ratio = ratio.round(1).astype(str) + "%"
 
     return ratio
+
+#移動平均を追加する関数
+def add_moving_average(df,window=7):
+    
+    df = df.sort_values("日付")
+    df[f"移動平均{window}日"] = df["個数"].rolling(window=window).mean()
+    return df

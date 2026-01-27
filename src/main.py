@@ -5,6 +5,15 @@ from analyzer import (
     add_weekday_column,
     summarize_by_month_and_weekday,
     summarize_by_month_and_weekday_ratio,
+    add_moving_average,
+)
+
+from reporter import (
+    plot_month_summary,
+    plot_weekday_summary,
+    plot_month_weekday_summary,
+    plot_moving_average,
+    plot_moving_average_30,
 )
 
 def main():
@@ -33,6 +42,10 @@ def main():
     print("月別集計:")
     print(month_summary)
     
+    
+    # 月別集計の棒グラフを表示
+    plot_month_summary(df)
+    
     # ---------------------------------------------------------
     # ④ 曜日別集計
     #    - 曜日ごとの個数合計を計算
@@ -41,6 +54,9 @@ def main():
     weekday_summary = summarize_by_weekday(df)
     print("\n曜日別集計:")
     print(weekday_summary)
+
+    # 曜日別集計の棒グラフを表示
+    plot_weekday_summary(df)
 
     # ---------------------------------------------------------
     # ⑤ 月 × 曜日クロス集計（絶対数）
@@ -51,6 +67,9 @@ def main():
     print("\n月☓曜日クロス集計:")
     print(month_and_weekday_summary)
     
+    # 月 × 曜日クロス集計の積み上げ棒グラフを表示
+    plot_month_weekday_summary(df)
+    
     # ---------------------------------------------------------
     # ⑥ 月 × 曜日クロス集計（比率）
     #    - 各月の合計に対する曜日ごとの割合（％）を計算
@@ -60,6 +79,15 @@ def main():
     print("\n月☓曜日比率クロス集計:")
     print(summary_by_month_and_weekday_ratio)
     
+    # 日別データに7日移動平均列を追加（短期トレンドを滑らかにする）
+    df = add_moving_average(df, 7) 
+    print(df.head())
+    # 7日移動平均の折れ線グラフを表示
+    plot_moving_average(df)
     
+    # 日別データに30日移動平均列を追加（長期トレンドを滑らかにする）
+    df = add_moving_average(df, 30) 
+    # 30日移動平均の折れ線グラフを表示
+    plot_moving_average_30(df)
 if __name__ == "__main__":
     main()
